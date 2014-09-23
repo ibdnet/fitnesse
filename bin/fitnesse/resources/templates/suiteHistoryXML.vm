@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<suiteResults>
+  <FitNesseVersion>$suiteExecutionReport.version</FitNesseVersion>
+  <rootPath>#escape($suiteExecutionReport.rootPath)</rootPath>
+  #foreach ($reference in $suiteExecutionReport.pageHistoryReferences)
+  <pageHistoryReference>
+    <name>#escape($reference.pageName)</name>
+    <date>$reference.getDateString()</date>
+    <pageHistoryLink>$reference.pageName?pageHistory&amp;resultDate=$reference.resultDate</pageHistoryLink>
+    <counts>
+      <right>$reference.testSummary.right</right>
+      <wrong>$reference.testSummary.wrong</wrong>
+      <ignores>$reference.testSummary.ignores</ignores>
+      <exceptions>$reference.testSummary.exceptions</exceptions>
+    </counts>
+    <runTimeInMillis>$reference.RunTimeInMillis</runTimeInMillis>
+  </pageHistoryReference>
+  #end
+  <finalCounts>
+    <right>$suiteExecutionReport.finalCounts.right</right>
+    <wrong>$suiteExecutionReport.finalCounts.wrong</wrong>
+    <ignores>$suiteExecutionReport.finalCounts.ignores</ignores>
+    <exceptions>$suiteExecutionReport.finalCounts.exceptions</exceptions>
+  </finalCounts>
+  <totalRunTimeInMillis>$suiteExecutionReport.totalRunTimeInMillis</totalRunTimeInMillis>
+
+</suiteResults>
+

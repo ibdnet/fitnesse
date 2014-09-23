@@ -1,0 +1,64 @@
+buildscript {
+   
+	ext {
+		springBootVersion = '1.1.6.RELEASE'
+	}
+    repositories {
+        maven { url "http://repo.spring.io/libs-snapshot" }
+        mavenLocal()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.1.6.RELEASE")
+    }
+}
+
+
+apply plugin: 'java'
+apply plugin: 'eclipse-wtp'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+apply plugin: 'war'
+
+/*
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+*/
+
+war {
+    baseName = 'seyshelles'
+    /*version =  '0.1.0'*/
+}
+
+springBoot {
+  mainClass = "fitnesseMain.FitNesseMain"
+}
+
+
+
+repositories {
+    mavenCentral()
+    maven { url "http://repo.spring.io/libs-snapshot" }
+    maven { url "http://maven.springframework.org/milestone" }
+    
+    flatDir {
+    	dirs 'lib'
+    }
+}
+
+configurations {
+    providedRuntime
+}
+
+dependencies {
+ 
+    compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}") 
+    providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
+    testCompile("junit:junit")
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.12'
+}
+
+
+ant.importBuild 'build.xml'

@@ -77,6 +77,7 @@ public class FitNesse {
   }
 
   public boolean isRunning() {
+	  
     return theService != null;
   }
 

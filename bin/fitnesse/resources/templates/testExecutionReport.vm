@@ -1,0 +1,23 @@
+#if($testExecutionReport)
+<table>
+  <tr>
+    <td>$testExecutionReport.Date</td>
+    <td class="meta">FitNesse Version: $testExecutionReport.Version</td>
+  </tr>
+</table>
+
+#foreach($testResult in $testExecutionReport.Results)
+<hr/>
+#set($counts = $testResult.TestSummary)
+<div id="test-summary" class="$ExecutionResult.getExecutionResult($testResult.RelativePageName, $counts)">
+    <strong>$testResult.RelativePageName:</strong>
+    $counts.Right right,
+    $counts.Wrong wrong,
+    $counts.Ignores ignored,
+    $counts.Exceptions exceptions
+    ($testResult.runTimeInMillis ms)
+</div>
+
+<div>$testResult.Content</div>
+#end
+#end
