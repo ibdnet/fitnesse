@@ -5,7 +5,6 @@
     <resolvers>
     <chain name="default">
         <ibiblio name="maven2" root="${maven.central.url}" m2compatible="true" />
-		 <ibiblio name="maven3" root="${maven.spring.snapshot.url}" m2compatible="true" />
     </chain>
     </resolvers>
 </ivysettings>

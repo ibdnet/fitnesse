@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TimeZone;
 
-
 import util.Clock;
 
 public abstract class Response {
@@ -235,6 +234,4 @@ public abstract class Response {
     String reasonPhrase = reasonCodes.get(status);
     return reasonPhrase == null ? "Unknown Status" : reasonPhrase;
   }
-
-//public abstract void sendTo(fitnesseController fitnesseController) throws IOException ;
 }

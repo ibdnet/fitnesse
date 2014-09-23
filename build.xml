@@ -20,9 +20,9 @@
   
 	<target name="all" depends="unit_tests, acceptance_tests" description="Run this target any time you change code or acceptance tests. It will clean, then compile the source, run all the unit test and fitnesse acceptance tests."/>
   
-	<target name="make" depends="reset, compile" description="reset, then compile the source"/>
+	<target name="build" depends="clean, compile" description="clean, then compile the source"/>
   	
-  	<target name="unit_tests" depends="reset, unit_test" description="builds code from scratch, runs all the unit tests"/>
+  	<target name="unit_tests" depends="clean, unit_test" description="builds code from scratch, runs all the unit tests"/>
   
 	<zipfileset id="wikipages.fileset" prefix="Resources/FitNesseRoot" dir="FitNesseRoot">
 		<include name="FitNesse/**"/>
@@ -32,10 +32,8 @@
 		<include name="TemplateLibrary/**"/>
 		<exclude name="**/*.zip"/>
 	</zipfileset>
-	
-	
 
-	<target name="execute" depends="compile, compile-bootstrap-less, retrieve" description="Start FitNesse from the command line">
+	<target name="run" depends="compile, compile-bootstrap-less, retrieve" description="Start FitNesse from the command line">
 		<java classpathref="classpath" classname="fitnesseMain.FitNesseMain" fork="true" failonerror="true">
 			<arg value="-o" />
 			<arg value="-v" />
@@ -47,7 +45,7 @@
 	<!--
 	  Bundling
 	  -->
-	<target name="fitnesseJar" depends="compile, compile-bootstrap-less, createUpdateLists" description="generate the jar file">
+	<target name="jar" depends="compile, compile-bootstrap-less, createUpdateLists" description="generate the jar file">
 		<mkdir dir="${dist.dir}" />
 		<delete file="${dist.dir}/fitnesse.jar" />
 
@@ -62,7 +60,7 @@
 		</jar>
 	</target>
 
-	<target name="standalone-jar" depends="fitnesseJar" description="generate the standalone jar file">
+	<target name="standalone-jar" depends="jar" description="generate the standalone jar file">
 		<ivy:cachefileset setid="standalone.jar.fileset" conf="standalone" />
 		<jar jarfile="${dist.dir}/fitnesse-standalone.jar">
 			<zipfileset src="${dist.dir}/fitnesse.jar" />
@@ -74,7 +72,7 @@
 		</jar>
 	</target>
 
-	 <target name="sources-jar" depends="stamp-version">
+	<target name="sources-jar" depends="stamp-version">
 		<jar jarfile="${dist.dir}/fitnesse-sources.jar" basedir="src">
 			<include name="**" />
 			<zipfileset refid="wikipages.fileset" />
@@ -118,7 +116,7 @@
 
     <target name="compile" depends="stamp-version, resolve" description="compile the source (make)">
         <mkdir dir="${classes.dir}" />
-        <javac srcdir="${src.dir}" destdir="${classes.dir}" classpathref="classpath" debug="true" source="1.7" target="1.7" includeantruntime="false" />
+        <javac srcdir="${src.dir}" destdir="${classes.dir}" classpathref="classpath" debug="true" source="1.6" target="1.6" includeantruntime="false" />
         <copy todir="${classes.dir}">
             <fileset dir="${src.dir}">
                 <include name="fitnesse/resources/**" />
@@ -182,13 +180,13 @@
 		<echo message="v${version}" file="${classes.dir}/META-INF/FitNesseVersion.txt" />
 	</target>
 
-	<target name="reset" description="delete everything in the classes directory">
+	<target name="clean" description="delete everything in the classes directory">
 		<delete dir="${classes.dir}" />
 		<delete dir="${test.classes.dir}" />
 		<delete dir="${results.dir}" />
 		<delete dir="${lib.dir}" />
 		<delete dir="${dist.dir}" />
-		<delete dir="${javadoc.dir}" />		
+		<delete dir="${javadoc.dir}" />
 		<delete file="updateList"/>
 		<delete file="updateDoNotCopyOverList"/>
 	</target>
@@ -215,7 +213,7 @@
 
 	<target name="release_xml" depends="unit_tests, acceptance_tests_xml" />
 
-	<target name="release_jar" depends="unit_tests, fitnesseJar, standalone-jar, sources-jar, javadoc-jar"/>
+	<target name="release_jar" depends="unit_tests, jar, standalone-jar, sources-jar, javadoc-jar"/>
 
 	<target name="acceptance_tests_xml" depends="standalone-jar">
 		<java jar="${dist.dir}/fitnesse-standalone.jar" failonerror="true" fork="true" output="fitnesse-results.xml">
@@ -253,7 +251,7 @@
 		</path>
 	</target>
 
-	<target name="install" depends="set-version-if-not-manualy-set,fitnesseJar,sources-jar">
+	<target name="install" depends="set-version-if-not-manualy-set,jar,sources-jar">
 		<ivy:deliver deliverpattern="${dist.dir}/ivy.xml" pubrevision="${version}" status="integration" />
 		<ivy:publish resolver="local"
 			pubrevision="${version}"
@@ -270,7 +268,7 @@
 		</ivy:makepom>
 	</target>
 
-	<target name="snapshot" depends="pom,fitnesseJar,standalone-jar,sources-jar,javadoc-jar">
+	<target name="snapshot" depends="pom,jar,standalone-jar,sources-jar,javadoc-jar">
 		<ivy:settings id="ivy.publish.instance"
 			file="ivysettings-sonatype.xml" />
 		<ivy:publish resolver="sonatype-nexus-snapshots"
@@ -283,7 +281,7 @@
 	</target>
 
 
-	<target name="publish" depends="pom,fitnesseJar,standalone-jar,sources-jar,javadoc-jar">
+	<target name="publish" depends="pom,jar,standalone-jar,sources-jar,javadoc-jar">
 		<fail unless="upload.user" message="supply upload.user on the command line"/>
 		<fail unless="upload.password" message="supply upload.password on the command line"/>
 		<fail unless="pgp.password" message="supply pgp.password on the command line"/>
@@ -302,9 +300,7 @@
 		Dependency management boilerplate
 	  -->
 	<property name="maven.central.url" value="http://repo2.maven.org/maven2" />
-    <property name="maven.spring.snapshot.url" value="http://repo.spring.io/libs-snapshot" />
-	<property name="springBootVersion" value = "1.1.4.RELEASE" />
-	
+
 	<available file="${antlib.dir}/ivy.jar" type="file" property="have.ivy.jar"/>
 	<available file="${antlib.dir}/bcprov.jar" type="file" property="have.bcprov.jar"/>
 	<available file="${antlib.dir}/bcpg.jar" type="file" property="have.bcpg.jar"/>

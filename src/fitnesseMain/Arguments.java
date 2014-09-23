@@ -1,4 +1,4 @@
- // Copyright (C) 2003-2009 by Object Mentor, Inc. All rights reserved.
+// Copyright (C) 2003-2009 by Object Mentor, Inc. All rights reserved.
 // Released under the terms of the CPL Common Public License version 1.0.
 package fitnesseMain;
 
@@ -15,25 +15,23 @@ public class Arguments {
   private final CommandLine commandLine = new CommandLine(
           "[-v][-p port][-d dir][-r root][-l logDir][-f config][-e days][-o][-i][-a credentials][-c command][-b output]");
 
-  private String rootPath;
-  private Integer port;
-  private String rootDirectory;
-  private String logDirectory;
-  private boolean omitUpdate;
-  private Integer daysTillVersionsExpire;
-  private String credentials;
-  private boolean installOnly;
-  private String command;
-  private String output;
-  private String configFile;
-  private boolean verboseLogging;
+  private final String rootPath;
+  private final Integer port;
+  private final String rootDirectory;
+  private final String logDirectory;
+  private final boolean omitUpdate;
+  private final Integer daysTillVersionsExpire;
+  private final String credentials;
+  private final boolean installOnly;
+  private final String command;
+  private final String output;
+  private final String configFile;
+  private final boolean verboseLogging;
 
-  public Arguments () {}
-  
   public Arguments(String... args) {
-   // if (!commandLine.parse(args)) {
-     // throw new IllegalArgumentException("Can not parse command line");
-   // }
+    if (!commandLine.parse(args)) {
+      throw new IllegalArgumentException("Can not parse command line");
+    }
     String port = commandLine.getOptionArgument("p", "port");
     this.port = port != null ? Integer.valueOf(port) : null;
     this.rootPath = commandLine.getOptionArgument("d", "dir");
@@ -46,229 +44,11 @@ public class Arguments {
     this.output = commandLine.getOptionArgument("b", "output");
     this.configFile = commandLine.getOptionArgument("f", "config");
     this.verboseLogging = commandLine.hasOption("v");
-     this.omitUpdate = commandLine.hasOption("o");
+    this.omitUpdate = commandLine.hasOption("o");
     this.installOnly = commandLine.hasOption("i");
   }
 
- 
-
-/**
- * @return the rootPath
- */
-public String getRootPath() {
-	return rootPath;
-}
-
-
-
-/**
- * @param rootPath the rootPath to set
- */
-public void setRootPath(String rootPath) {
-	this.rootPath = rootPath;
-}
-
-
-
-/**
- * @return the port
- */
-public Integer getPort() {
-	return port;
-}
-
-
-
-/**
- * @param port the port to set
- */
-public void setPort(Integer port) {
-	this.port = port;
-}
-
-
-
-/**
- * @return the rootDirectory
- */
-public String getRootDirectory() {
-	return rootDirectory;
-}
-
-
-
-/**
- * @param rootDirectory the rootDirectory to set
- */
-public void setRootDirectory(String rootDirectory) {
-	this.rootDirectory = rootDirectory;
-}
-
-
-
-/**
- * @return the logDirectory
- */
-public String getLogDirectory() {
-	return logDirectory;
-}
-
-
-
-/**
- * @param logDirectory the logDirectory to set
- */
-public void setLogDirectory(String logDirectory) {
-	this.logDirectory = logDirectory;
-}
-
-
-
-/**
- * @return the omitUpdate
- */
-public boolean isOmitUpdate() {
-	return omitUpdate;
-}
-
-
-
-/**
- * @param omitUpdate the omitUpdate to set
- */
-public void setOmitUpdate(boolean omitUpdate) {
-	this.omitUpdate = omitUpdate;
-}
-
-
-
-/**
- * @return the daysTillVersionsExpire
- */
-public Integer getDaysTillVersionsExpire() {
-	return daysTillVersionsExpire;
-}
-
-
-
-/**
- * @param daysTillVersionsExpire the daysTillVersionsExpire to set
- */
-public void setDaysTillVersionsExpire(Integer daysTillVersionsExpire) {
-	this.daysTillVersionsExpire = daysTillVersionsExpire;
-}
-
-
-
-/**
- * @return the credentials
- */
-public String getCredentials() {
-	return credentials;
-}
-
-
-
-/**
- * @param credentials the credentials to set
- */
-public void setCredentials(String credentials) {
-	this.credentials = credentials;
-}
-
-
-
-/**
- * @return the installOnly
- */
-public boolean isInstallOnly() {
-	return installOnly;
-}
-
-
-
-/**
- * @param installOnly the installOnly to set
- */
-public void setInstallOnly(boolean installOnly) {
-	this.installOnly = installOnly;
-}
-
-
-
-/**
- * @return the command
- */
-public String getCommand() {
-	return command;
-}
-
-
-
-/**
- * @param command the command to set
- */
-public void setCommand(String command) {
-	this.command = command;
-}
-
-
-
-/**
- * @return the output
- */
-public String getOutput() {
-	return output;
-}
-
-
-
-/**
- * @param output the output to set
- */
-public void setOutput(String output) {
-	this.output = output;
-}
-
-
-
-/**
- * @return the configFile
- */
-public String getConfigFile() {
-	return configFile;
-}
-
-
-
-/**
- * @param configFile the configFile to set
- */
-public void setConfigFile(String configFile) {
-	this.configFile = configFile;
-}
-
-
-
-/**
- * @return the verboseLogging
- */
-public boolean isVerboseLogging() {
-	return verboseLogging;
-}
-
-
-
-/**
- * @param verboseLogging the verboseLogging to set
- */
-public void setVerboseLogging(boolean verboseLogging) {
-	this.verboseLogging = verboseLogging;
-}
-
-
-
-static void printUsage() {
+  static void printUsage() {
     ContextConfigurator defaults = ContextConfigurator.systemDefaults();
 
     System.err.println("Usage: java -jar fitnesse.jar [-vpdrleoab]");

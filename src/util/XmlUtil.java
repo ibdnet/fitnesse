@@ -1,7 +1,4 @@
 // Copyright (C) 2003-2009 by Object Mentor, Inc. All rights reserved.
-//Last Modified: 09/16/14
-//Last Modified by: Deborah DeVine
-//Last Modified Desc: getTextContext() not supported
 // Released under the terms of the CPL Common Public License version 1.0.
 package util;
 
@@ -94,15 +91,14 @@ public class XmlUtil {
     if (namedElement == null) {
       return null;
     }
-    //String text = namedElement.getTextContent();
-    String text = namedElement.getAttribute("Text"); //getTextContent();
+    String text = namedElement.getTextContent();
     return (text.length() == 0) ? null : text;
   }
 
   public static void addTextNode(Element element, String tagName, String value) {
     if (value != null && !(value.equals(""))) {
       Element titleElement = element.getOwnerDocument().createElement(tagName);
-      titleElement.setAttribute("Text", value); //.setTextContent(value);
+      titleElement.setTextContent(value);
       element.appendChild(titleElement);
     }
   }
